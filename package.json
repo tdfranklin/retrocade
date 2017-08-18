@@ -1,0 +1,37 @@
+{
+  "name": "retrocade",
+  "version": "1.0.0",
+  "description": "Retro Arcade application",
+  "engines": {
+    "node": "6.11.x"
+  },
+  "scripts": {
+    "start": "node server",
+    "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "react-ui/node_modules"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tdfranklin/retrocade.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "create-react-app",
+    "react"
+  ],
+  "author": "Tyler D. Franklin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tdfranklin/retrocade/issues"
+  },
+  "devDependencies": {},
+  "homepage": "https://github.com/tdfranklin/retrocade#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "mongoose": "^4.11.7"
+  }
+}
