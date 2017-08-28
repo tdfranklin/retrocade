@@ -1,28 +1,86 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #000050;
+  background-image: url('./assets/backgrounds/bg1.png');
+  background-repeat: no-repeat;
+  background-size: 1300px 950px;
+  background-position: center center;
+  overflow: hidden;
+  }
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
 .App {
-  text-align: center;
+    height: 100%;
+    width: 100%;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.HomeScreen {
+  padding: 0;
+  margin: auto;
+  display: block;
+  width: 815px;
+  height: 615px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+#canvas {
+  /*
+  padding: 0;
+  margin: auto;
+  display: block;
+  width: 815px;
+  height: 615px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  */
+  z-index: -1;
 }
 
-.App-intro {
-  font-size: large;
+#Pong {
+  border: 2px solid white;
+  margin: auto auto;
+  position: absolute;
+  z-index: 1;
+  bottom: 5%;
+  left: 5%;
 }
 
-.App a {
-  color: #f60;
+#Snake {
+  border: 2px solid white;
+  margin: auto auto;
+  position: absolute;
+  z-index: 1;
+  bottom: 5%;
+  right: 5%;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+#Pong:hover, #Snake:hover {
+  border: 2px solid orange;
 }
