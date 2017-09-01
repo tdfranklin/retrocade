@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import {} from './helpers/helpers';
 
 class ComponentName extends Component {
     constructor(props) {
         super(props);
         this.state = {
         };
+    }
+
+    static defaultProps = {
     }
 
     componentDidMount() {
