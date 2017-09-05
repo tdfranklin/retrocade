@@ -59,10 +59,11 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  */
+  
   z-index: -1;
+  */
 }
-
+/*
 #Pong {
   border: 2px solid white;
   margin: auto auto;
@@ -81,6 +82,16 @@ body {
   right: 5%;
 }
 
+#Play {
+  border: 2px solid white;
+  margin: auto auto;
+  position: absolute;
+  z-index: 1;
+  bottom: 5%;
+  right: 5%;
+}
+
 #Pong:hover, #Snake:hover {
   border: 2px solid orange;
 }
+*/

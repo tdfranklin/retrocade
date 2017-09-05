@@ -18,6 +18,9 @@ class Canvas extends Component {
                 height={this.props.height}
                 width={this.props.width}
                 onClick={this.props.onClick}
+                onMouseEnter={this.props.onMouseEnter}
+                onMouseLeave={this.props.onMouseLeave}
+                style={this.props.canvasStyle}
             ></canvas>
         </div>
         );

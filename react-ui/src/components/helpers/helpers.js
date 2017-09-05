@@ -13,6 +13,14 @@ export const SetDefaultCanvas = (color, name) => {
     context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+export const SetCanvasBorder = (color, name, size) => {
+    const canvas = GetCanvas(name);
+    const context = GetContext(name);
+    context.strokeStyle = color;
+    context.lineWidth = size;
+    context.strokeRect(0, 0, canvas.width, canvas.height);
+}
+
 export const SetCanvasText = (color, text, fontSize, xPos, yPos, name) => {
     const context = GetContext(name);
     context.fillStyle = color;

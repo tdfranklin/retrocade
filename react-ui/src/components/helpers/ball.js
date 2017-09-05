@@ -7,17 +7,7 @@ class Ball extends Component {
         this.state = {
         };
     }
-
-    static defaultProps = {
-    }
-
-    componentDidMount() {
-        BuildCircle('canvas', 'white', this.props.xPos, this.props.yPos, this.props.radius);
-    }
-
-    componentWillUpdate() {
-    }
-
+    
     componentDidUpdate(prevProps, prevState) {
         BuildCircle('canvas', 'white', this.props.xPos, this.props.yPos, this.props.radius);
     }
