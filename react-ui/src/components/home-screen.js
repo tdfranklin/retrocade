@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import Canvas from './helpers/canvas';
-import { SetDefaultCanvas, SetCanvasText, GetCanvas, GetContext, ResetCanvas } from './helpers/helpers';
+import { SetDefaultCanvas, SetCanvasText, ResetCanvas } from './helpers/helpers';
+import Pong from './pong';
 
 class HomeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
             shapes: [],
-            gameSelected: false
+            gameSelected: false,
+            game: null
         };
     }
 
@@ -16,8 +18,11 @@ class HomeScreen extends Component {
     }
 
     handleClick(e) {
-        //console.log(e.target.id);
-        this.setState({gameSelected: true});
+        e.preventDefault();
+        this.setState({
+            gameSelected: true,
+            game: e.target.id
+        });
         ResetCanvas('black', 'canvas');
     }
 
@@ -51,6 +56,9 @@ class HomeScreen extends Component {
                         onClick={this.handleClick.bind(this)}
                     />
                 </div>
+            }
+            {this.state.game === 'Pong' &&
+                <Pong />
             }
         </div>
         );
