@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Canvas from './helpers/canvas';
 import { SetDefaultCanvas, SetCanvasText, ResetCanvas, SetCanvasBorder } from './helpers/helpers';
-import PongHome from './pong/pong-home';
-import SnakeHome from './snake/snake-home';
+import { PongInstructions, SnakeInstructions } from './helpers/instructions';
+import GameHome from './game-home';
+
 
 class HomeScreen extends Component {
     constructor(props) {
@@ -90,10 +91,24 @@ class HomeScreen extends Component {
                 </div>
             }
             {this.state.game === 'Pong' &&
-                <PongHome />
+                <GameHome
+                    lineOne={PongInstructions.lineOne}
+                    lineTwo={PongInstructions.lineTwo}
+                    lineThree={PongInstructions.lineThree}
+                    lineFour={PongInstructions.lineFour}
+                    lineFive={PongInstructions.lineFive}
+                    game={this.state.game}
+                />
             }
             {this.state.game === 'Snake' &&
-                <SnakeHome />
+                <GameHome
+                    lineOne={SnakeInstructions.lineOne}
+                    lineTwo={SnakeInstructions.lineTwo}
+                    lineThree={SnakeInstructions.lineThree}
+                    lineFour={SnakeInstructions.lineFour}
+                    lineFive={SnakeInstructions.lineFive}
+                    game={this.state.game}
+                />
             }
         </div>
         );

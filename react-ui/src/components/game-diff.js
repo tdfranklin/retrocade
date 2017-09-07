@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {SetCanvasText} from '../helpers/helpers';
+import { SetCanvasText } from './helpers/helpers';
 
-class SnakeHome extends Component {
+class GameDifficulty extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,10 +17,10 @@ class SnakeHome extends Component {
 
     render() {
         return (
-        <div className="SnakeHome">
+        <div className="GameDifficulty">
         </div>
         );
     }
 }
 
-export default SnakeHome;
+export default GameDifficulty;
