@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Canvas from '../helpers/canvas';
-import {SetCanvasText, ResetCanvas} from '../helpers/helpers';
-import Pong from './pong';
-import PongDifficulty from './pong-diff';
+import Canvas from './helpers/canvas';
+import { SetCanvasText, ResetCanvas } from './helpers/helpers';
+import GameDifficulty from './game-diff';
+import Pong from './games/pong';
+import Snake from './games/snake';
 
-class PongHome extends Component {
+class GameHome extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,12 +18,13 @@ class PongHome extends Component {
     }
 
     componentDidMount() {
-        const textOne = 'Instructions: Use the Up and Down arrow keys on your';
-        const textTwo = 'keyboard to move your paddle up and down to hit the';
-        const textThree = 'ball. Try to score a goal against your opponent. The';
-        const textFour = 'game is over when your opponent scores 500 or more';
-        const textFive = 'points. Can you make it to the leaderboard?';
-        SetCanvasText('white', 'Pong', '35px', 350, 50, 'canvas');
+        const textOne = this.props.lineOne;
+        const textTwo = this.props.lineTwo;
+        const textThree = this.props.lineThree;
+        const textFour = this.props.lineFour;
+        const textFive = this.props.lineFive;
+        const game = this.props.game;
+        SetCanvasText('white', game, '35px', 350, 50, 'canvas');
         SetCanvasText('white', textOne, '15px', 20, 100, 'canvas');
         SetCanvasText('white', textTwo, '15px', 20, 140, 'canvas');
         SetCanvasText('white', textThree, '15px', 20, 180, 'canvas');
@@ -69,7 +71,7 @@ class PongHome extends Component {
         }
 
         return (
-        <div className="PongHome">
+        <div className="GameHome">
             {!this.state.play && !this.state.diff &&
                 <div>
                     <Canvas
@@ -92,15 +94,18 @@ class PongHome extends Component {
                     />
                 </div>
             }
-            {this.state.play &&
+            {this.state.play && this.props.game === 'Pong' &&
                 <Pong />
             }
+            {this.state.play && this.props.game === 'Snake' &&
+                <Snake />
+            }
             {this.state.diff &&
-                <PongDifficulty />
+                <GameDifficulty />
             }
         </div>
         );
     }
 }
 
-export default PongHome;
+export default GameHome;

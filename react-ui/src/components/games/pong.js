@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SetDefaultCanvas, GetCanvas, GetContext, SetCanvasText } from '../helpers/helpers';
-import Paddle from '../helpers/paddle';
-import Ball from '../helpers/ball';
+import Paddle from '../helpers/pong/paddle';
+import Ball from '../helpers/pong/ball';
 
 class Pong extends Component {
     constructor(props) {

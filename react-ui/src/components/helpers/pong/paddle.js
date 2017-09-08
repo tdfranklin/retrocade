@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BuildRect } from './helpers';
+import { BuildRect } from '../helpers';
 
 class Paddle extends Component {
     

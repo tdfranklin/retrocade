@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BuildCircle } from './helpers';
+import { BuildCircle } from '../helpers';
 
 class Ball extends Component {
     constructor(props) {
