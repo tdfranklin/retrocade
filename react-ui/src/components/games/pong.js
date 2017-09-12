@@ -25,7 +25,8 @@ class Pong extends Component {
                 yPos: 250,
                 width: 20,
                 height: 100,
-                speed: 3
+                speed: 3,
+                offset: 30
             },
             ball: {
                 xPos: 400,
@@ -34,8 +35,12 @@ class Pong extends Component {
                 xSpeed: 3,
                 ySpeed: 0,
                 serve: 'right',
-                maxSpeed: 7
-            }
+                maxSpeed: 7,
+                diffSpeed: 3
+            },
+            endScore: 500,
+            intervalID: '',
+            gameOver: false
         };
         this.keyState = {};
     }
@@ -51,18 +56,23 @@ class Pong extends Component {
         document.addEventListener('keyup', (e) => {
             delete this.keyState[e.key];
         });
+        this.setDifficulty();
     }
 
     componentDidMount() {
-        setInterval(this.moveBall.bind(this), 1000/60);
+        const intervalID = setInterval(this.moveBall.bind(this), 1000/60);
+        this.setState({intervalID: intervalID});
     }
 
-    componentWillUpdate() {
+    componentWillUpdate() {        
         this.redrawCanvas();
         setTimeout(() => {
             this.movePaddle();
             this.moveComputerPaddle();
         }, 200);
+        if (this.state.gameOver) {
+            clearInterval(this.state.intervalID);
+        }
     }
 
     componentWillUnmount() {
@@ -73,6 +83,30 @@ class Pong extends Component {
         document.removeEventListener('keyup', (e) => {
             delete this.keyState[e.key];
         });
+    }
+
+    setDifficulty() {
+        //Makes changes to state based on difficulty setting.
+        if (this.props.difficulty === 'Medium') {
+            this.setState((prevState) => {
+                prevState.ball.xSpeed += 1;
+                prevState.ball.diffSpeed += 1;
+                prevState.ball.maxSpeed += 1;
+                prevState.scores.multiplier += 5;
+                return prevState;
+            });
+        }
+        if (this.props.difficulty === 'Hard') {
+            this.setState((prevState) => {
+                prevState.ball.xSpeed += 2;
+                prevState.ball.diffSpeed += 2;
+                prevState.ball.maxSpeed += 2;
+                prevState.computerPaddle.offset += 20;
+                prevState.computerPaddle.speed += 4;
+                prevState.scores.multiplier += 10;
+                return prevState;
+            });
+        }
     }
 
     redrawCanvas() {
@@ -123,7 +157,7 @@ class Pong extends Component {
         const ballY = this.state.ball.yPos;
         const paddleY = this.state.computerPaddle.yPos;
         const paddleH = this.state.computerPaddle.height;
-        const offset = 60;
+        const offset = this.state.computerPaddle.offset;
 
         //AI paddle follows ball up unless at top of canvas.
         if (ballY < paddleY) {
@@ -154,6 +188,7 @@ class Pong extends Component {
         const ballY = this.state.ball.yPos;
         const radius = this.state.ball.radius;
         const maxSpeed = this.state.ball.maxSpeed;
+        const diffSpeed = this.state.ball.diffSpeed;
         const ballTop = ballY - radius;
         const ballBottom = ballY + radius;
         const ballLeft = ballX - radius;
@@ -188,13 +223,16 @@ class Pong extends Component {
             this.setState((prevState) => {
                 prevState.scores.computer += prevState.scores.bounces * prevState.scores.multiplier;
                 prevState.scores.bounces = 0;
-                prevState.ball.xSpeed = 3;
+                prevState.ball.xSpeed = diffSpeed;
                 prevState.ball.ySpeed = 0;
                 prevState.ball.xPos = (canvas.width / 2);
                 prevState.ball.yPos = (canvas.height / 2);
                 prevState.ball.serve = 'right';
                 return prevState;
             });
+            if (this.state.scores.computer >= this.state.endScore) {
+                this.setState({gameOver: true});
+            }
         }
 
         //If ball makes it past right paddle, score left player points and reset ball.
@@ -202,7 +240,7 @@ class Pong extends Component {
             this.setState((prevState) => {
                 prevState.scores.player += prevState.scores.bounces * prevState.scores.multiplier;
                 prevState.scores.bounces = 0;
-                prevState.ball.xSpeed = -3;
+                prevState.ball.xSpeed = -diffSpeed;
                 prevState.ball.ySpeed = 0;
                 prevState.ball.xPos = (canvas.width / 2);
                 prevState.ball.yPos = (canvas.height / 2);

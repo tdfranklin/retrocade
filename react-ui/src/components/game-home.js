@@ -15,6 +15,7 @@ class GameHome extends Component {
     }
 
     static defaultProps = {
+        difficulty: 'Easy'
     }
 
     componentDidMount() {
@@ -95,13 +96,19 @@ class GameHome extends Component {
                 </div>
             }
             {this.state.play && this.props.game === 'Pong' &&
-                <Pong />
+                <Pong
+                    difficulty={this.props.difficulty}
+                />
             }
             {this.state.play && this.props.game === 'Snake' &&
-                <Snake />
+                <Snake
+                    difficulty={this.props.difficulty}
+                />
             }
             {this.state.diff &&
-                <GameDifficulty />
+                <GameDifficulty
+                    game={this.props.game}
+                />
             }
         </div>
         );
