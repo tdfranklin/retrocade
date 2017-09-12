@@ -56,3 +56,7 @@ export const BuildCircle = (name, color, x, y, radius) => {
     context.fillStyle = color;
     context.fill();
 }
+
+export const GetRandInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

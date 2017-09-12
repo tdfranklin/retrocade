@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SetCanvasText, GetCanvas, ResetCanvas, BuildRect } from '../helpers/helpers';
+import { SetCanvasText, GetCanvas, ResetCanvas, GetRandInt } from '../helpers/helpers';
 import Body from '../helpers/snake/body';
 import Food from '../helpers/snake/food';
 
@@ -17,117 +17,88 @@ class Snake extends Component {
     }
 
     static defaultProps = {
-        snakeSize: 10,
+        snakeSize: 15,
         snakeSegment: 4,
-        snakeColor: 'white',
-        foodColor: 'green'
+        snakeColor: 'darkolivegreen',
+        snakeBorder: 'darkgreen',
+        foodColor: 'crimson',
+        foodBorder: 'chartreuse',
+        snakeSpeed: 80
     }
 
     componentWillMount() {
         document.addEventListener('keydown', (e) => {
-            //console.log(e.key);
-            const keyPress = e.key;
-            let direction = this.state.direction;
-
-            switch(keyPress) {
-                case 'ArrowLeft':
-                    if (direction !== 'right') {
-                        direction = 'left';
-                    }
-                    break;
-                case 'ArrowRight':
-                    if (direction !== 'left') {
-                        direction = 'right';
-                    }
-                    break;
-                case 'ArrowUp':
-                    if (direction !== 'down') {
-                        direction = 'up';
-                    }
-                    break;
-                case 'ArrowDown':
-                    if (direction !== 'up') {
-                        direction = 'down';
-                    }
-                    break;
-                default:
-                    break;
-            }
-            this.setState({direction: direction});
+            setTimeout(() => {
+                this.handleDirection(e);
+            }, 100);
         });
     }
 
     componentDidMount() {
-        //SetCanvasText('white', 'Coming Soon', '35px', 250, 300, 'canvas');
-        SetCanvasText('white', `Score: ${this.state.score}`, '15px', 8, 20, 'canvas');
         this.startSnake();
         this.createFood();
-        const intervalID = setInterval(this.gameLoop.bind(this), 80);
+        const intervalID = setInterval(this.gameLoop.bind(this), this.props.snakeSpeed);
         this.setState({intervalID: intervalID});
-        //console.log(this.state.snake);
     }
 
     componentWillUpdate() {
-        //this.gameLoop();
         if (this.state.gameOver) {
             clearInterval(this.state.intervalID);
         }
-        //console.log(this.state.gameOver);
-    }
-
-    componentDidUpdate() {
-        //console.log(this.state.direction);
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', (e) => {
-            //console.log(e.key);
-            const keyPress = e.key;
-            let direction = this.state.direction;
-
-            switch(keyPress) {
-                case 'ArrowLeft':
-                    if (direction !== 'right') {
-                        direction = 'left';
-                    }
-                    break;
-                case 'ArrowRight':
-                    if (direction !== 'left') {
-                        direction = 'right';
-                    }
-                    break;
-                case 'ArrowUp':
-                    if (direction !== 'down') {
-                        direction = 'up';
-                    }
-                    break;
-                case 'ArrowDown':
-                    if (direction !== 'up') {
-                        direction = 'down';
-                    }
-                    break;
-                default:
-                    break;
-            }
+            this.handleDirection(e);
         });
+    }
+
+    handleDirection(event) {
+        const keyPress = event.key;
+        let direction = this.state.direction;
+
+        switch(keyPress) {
+            case 'ArrowLeft':
+                if (direction !== 'right') {
+                    direction = 'left';
+                }
+                break;
+            case 'ArrowRight':
+                if (direction !== 'left') {
+                    direction = 'right';
+                }
+                break;
+            case 'ArrowUp':
+                if (direction !== 'down') {
+                    direction = 'up';
+                }
+                break;
+            case 'ArrowDown':
+                if (direction !== 'up') {
+                    direction = 'down';
+                }
+                break;
+            default:
+                break;
+            }
+        this.setState({direction: direction});
     }
 
     createFood() {
         const canvas = GetCanvas('canvas');
         const snake = this.state.snake;
         let food = {
-            x: Math.floor((Math.random() * (70)) + 1),
-            y: Math.floor((Math.random() * (50)) + 1)
+            x: GetRandInt(1, ((canvas.width / this.props.snakeSize) - 15)),
+            y: GetRandInt(1, ((canvas.height / this.props.snakeSize) - 15))
         }
 
         for (let i = 0; i > snake.length; i++) {
             const snakeX = snake[i].x;
             const snakeY = snake[i].y;
 
-            if (food.x === snakeX && food.y === snakeY ||
-                food.y === snakeY && food.x === snakeX) {
-                food.x = Math.floor((Math.random() * 30) + 1);
-                food.y = Math.floor((Math.random() * 30) + 1);
+            if (food.x === snakeX && food.y === snakeY) {
+                food.x = GetRandInt(1, ((canvas.width / this.props.snakeSize) - 15));
+                food.y = GetRandInt(1, ((canvas.height / this.props.snakeSize) - 15));
             }
         }
         this.setState({food: food});
@@ -150,18 +121,6 @@ class Snake extends Component {
             snake.push({x: i, y:0});
         }
         this.setState({snake: snake});
-    }
-
-    drawBody(xPos, yPos) {
-        const size = this.props.snakeSize;
-        const color = this.props.snakeColor;
-        BuildRect(color, 'canvas', (xPos * size), (yPos * size), size, size);
-    }
-
-    drawFood(xPos, yPos) {
-        const size = this.props.snakeSize;
-        const color = this.props.foodColor;
-        BuildRect(color, 'canvas', (xPos * size), (yPos * size), size, size);
     }
 
     gameLoop() {
@@ -187,8 +146,8 @@ class Snake extends Component {
             snakeY++;
         }
 
-        if (snakeX === -1 || snakeX === (canvas.width / this.props.snakeSize) ||
-            snakeY === -1 || snakeY === (canvas.height / this.props.snakeSize) ||
+        if (snakeX <= -1 || snakeX >= (canvas.width / this.props.snakeSize) ||
+            snakeY <= -1 || snakeY >= (canvas.height / this.props.snakeSize) ||
             this.checkCollision(snakeX, snakeY, snake)) {
                 this.setState({gameOver: true});
             }
@@ -198,7 +157,7 @@ class Snake extends Component {
                 x: snakeX,
                 y: snakeY
             }
-            score++;
+            score += snake.length * this.props.snakeSpeed;
             this.createFood();
         } else {
             tail = snake.pop();
@@ -206,12 +165,6 @@ class Snake extends Component {
             tail.y = snakeY;
         }
         snake.unshift(tail);
-
-        for (let i = 0; i < snake.length; i++) {
-            this.drawBody(snake[i].x, snake[i].y);
-        }
-
-        this.drawFood(food.x, food.y);
 
         this.setState({
             snake: snake,
@@ -222,25 +175,21 @@ class Snake extends Component {
     render() {
         return (
         <div className="Snake">
-        </div>
-        );
-    }
-/*
-    render() {
-        return (
-        <div className="Snake">
             <Body 
                 size={this.props.snakeSize}
                 color={this.props.snakeColor}
+                border={this.props.snakeBorder}
+                snake={this.state.snake}
             />
             <Food
                 size={this.props.snakeSize}
                 color={this.props.foodColor}
+                border={this.props.foodBorder}
+                food={this.state.food}
             />
         </div>
         );
     }
-*/
 }
 
 export default Snake;

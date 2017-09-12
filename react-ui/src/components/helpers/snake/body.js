@@ -12,13 +12,21 @@ class Body extends Component {
     }
 
     componentDidMount() {
-        //this.drawBody(25, 25);
+    }
+
+    componentDidUpdate() {
+        const snake = this.props.snake;
+        for (let i = 0; i < snake.length; i++) {
+            this.drawBody(snake[i].x, snake[i].y);
+        }
     }
 
     drawBody(xPos, yPos) {
         const size = this.props.size;
         const color = this.props.color;
-        BuildRect(color, 'canvas', (xPos * size), (yPos * size), size, size);
+        const borderColor = this.props.border;
+        BuildRect(borderColor, 'canvas', (xPos * size), (yPos * size), size, size);
+        BuildRect(color, 'canvas', (xPos * size + 1), (yPos * size + 1), size - 2, size - 2);
     }
 
     render() {

@@ -12,14 +12,19 @@ class Food extends Component {
     }
 
     componentDidMount() {
-        //this.drawFood(10, 10);
+    }
+
+    componentDidUpdate() {
+        const food = this.props.food;
+        this.drawFood(food.x, food.y);
     }
 
     drawFood(xPos, yPos) {
         const size = this.props.size;
         const color = this.props.color;
-        BuildRect(color, 'canvas', (xPos * size), (yPos * size), size, size);
-        //BuildRect('red', 'canvas', (xPos * size + 1), (yPos * size + 1), size - 2, size - 2);
+        const borderColor = this.props.border;
+        BuildRect(borderColor, 'canvas', (xPos * size), (yPos * size), size, size);
+        BuildRect(color, 'canvas', (xPos * size + 1), (yPos * size + 1), size - 2, size - 2);
     }
 
     render() {
