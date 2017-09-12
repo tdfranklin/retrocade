@@ -8,11 +8,13 @@ class Snake extends Component {
         super(props);
         this.state = {
             score: 0,
+            scoreMod: 50,
             snake: [],
             food: {},
             direction: 'down',
             intervalID: '',
-            gameOver: false
+            gameOver: false,
+            snakeSpeed: 100
         };
     }
 
@@ -22,8 +24,7 @@ class Snake extends Component {
         snakeColor: 'darkolivegreen',
         snakeBorder: 'darkgreen',
         foodColor: 'crimson',
-        foodBorder: 'chartreuse',
-        snakeSpeed: 80
+        foodBorder: 'chartreuse'
     }
 
     componentWillMount() {
@@ -32,12 +33,13 @@ class Snake extends Component {
                 this.handleDirection(e);
             }, 100);
         });
+        this.setDifficulty();
     }
 
     componentDidMount() {
         this.startSnake();
         this.createFood();
-        const intervalID = setInterval(this.gameLoop.bind(this), this.props.snakeSpeed);
+        const intervalID = setInterval(this.gameLoop.bind(this), this.state.snakeSpeed);
         this.setState({intervalID: intervalID});
     }
 
@@ -53,10 +55,27 @@ class Snake extends Component {
         });
     }
 
+    setDifficulty() {
+        //Makes changes to state based on difficulty setting.
+        if (this.props.difficulty === 'Medium') {
+            this.setState({
+                snakeSpeed: 80,
+                scoreMod: 70
+            });
+        }
+        if (this.props.difficulty === 'Hard') {
+            this.setState({
+                snakeSpeed: 60,
+                scoreMod: 90
+            });
+        }
+    }
+
     handleDirection(event) {
         const keyPress = event.key;
         let direction = this.state.direction;
 
+        //Sets direction in state based on keyboard input.
         switch(keyPress) {
             case 'ArrowLeft':
                 if (direction !== 'right') {
@@ -87,24 +106,29 @@ class Snake extends Component {
     createFood() {
         const canvas = GetCanvas('canvas');
         const snake = this.state.snake;
+        //Creates food by generating a random X and Y coordinate and saving to state.
         let food = {
-            x: GetRandInt(1, ((canvas.width / this.props.snakeSize) - 15)),
-            y: GetRandInt(1, ((canvas.height / this.props.snakeSize) - 15))
+            x: GetRandInt(2, ((canvas.width / this.props.snakeSize) - 1)),
+            y: GetRandInt(2, ((canvas.height / this.props.snakeSize) - 1))
         }
 
+        //Checks to see if food coordinates are the same as snake and if so will
+        //generate new coordinates for food.
         for (let i = 0; i > snake.length; i++) {
             const snakeX = snake[i].x;
             const snakeY = snake[i].y;
 
             if (food.x === snakeX && food.y === snakeY) {
-                food.x = GetRandInt(1, ((canvas.width / this.props.snakeSize) - 15));
-                food.y = GetRandInt(1, ((canvas.height / this.props.snakeSize) - 15));
+                this.createFood();
+                break;
             }
         }
         this.setState({food: food});
     }
 
     checkCollision(xPos, yPos, arr) {
+        //takes snake head X and Y position and checks to see if it is touching any other
+        //segment of the snake body.  Returns boolean based on outcome.
         for (let i = 0; i < arr.length; i++) {
             if (arr[i].x === xPos && arr[i].y === yPos) {
                 return true;
@@ -117,6 +141,7 @@ class Snake extends Component {
         const length = this.props.snakeSegment;
         const snake = this.state.snake;
 
+        //Creates initial snake based on snakeSegment props.
         for (let i = (length - 1); i >= 0; i--) {
             snake.push({x: i, y:0});
         }
@@ -124,6 +149,7 @@ class Snake extends Component {
     }
 
     gameLoop() {
+        //Reset and redraw canvas.
         ResetCanvas('black', 'canvas');
         SetCanvasText('white', `Score: ${this.state.score}`, '15px', 8, 20, 'canvas');
 
@@ -136,6 +162,7 @@ class Snake extends Component {
         let tail = {};
         let score = this.state.score;
 
+        //Moves the snake in correct direction based on keyboard input.
         if (direction === 'right') {
             snakeX++;
         } else if (direction === 'left') {
@@ -146,18 +173,22 @@ class Snake extends Component {
             snakeY++;
         }
 
+        //Check to see if snake head collides with edge of canvas or itself and sets
+        //gameOver state if it does.
         if (snakeX <= -1 || snakeX >= (canvas.width / this.props.snakeSize) ||
             snakeY <= -1 || snakeY >= (canvas.height / this.props.snakeSize) ||
             this.checkCollision(snakeX, snakeY, snake)) {
                 this.setState({gameOver: true});
             }
 
+        //If the snake head touches the food, it will create a new snake segment,
+        //generate a new food and score.
         if (snakeX === food.x && snakeY === food.y) {
             tail = {
                 x: snakeX,
                 y: snakeY
             }
-            score += snake.length * this.props.snakeSpeed;
+            score += snake.length * this.state.scoreMod;
             this.createFood();
         } else {
             tail = snake.pop();
