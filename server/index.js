@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 let Score = require('./models/score-model');
 const routes = require('./routes/score-routes');
 
+//const dbAddress = 'mongodb://localhost/retrocade';
+const dbAddress = 'mongodb://heroku_mrlj3mkq:4h9rrdi3ip4s613pmsh11ovpbv@ds139884.mlab.com:39884/heroku_mrlj3mkq';
+
 //Initialize App
 const app = express();
 
@@ -13,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 
 //Database Connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/retrocade', {
+mongoose.connect(dbAddress, {
     useMongoClient: true
 });
 let db = mongoose.connection;
