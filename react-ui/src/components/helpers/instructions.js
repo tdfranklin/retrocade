@@ -2,8 +2,8 @@ export const PongInstructions = {
     lineOne: 'Instructions: Use the Up and Down arrow keys on your',
     lineTwo: 'keyboard to move your paddle up and down to hit the',
     lineThree: 'ball. Try to score a goal against your opponent. The',
-    lineFour: 'game is over when your opponent scores 500 or more',
-    lineFive: 'points. Can you make it to the leaderboard?'
+    lineFour: 'game is over when your opponent scores 5 times.',
+    lineFive: 'Can you make it to the leaderboard?'
 }
 
 export const SnakeInstructions = {

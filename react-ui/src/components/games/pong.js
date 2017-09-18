@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SetDefaultCanvas, GetCanvas, GetContext, SetCanvasText } from '../helpers/helpers';
 import Paddle from '../helpers/pong/paddle';
 import Ball from '../helpers/pong/ball';
+import LeaderBoard from '../leaderboard';
 
 class Pong extends Component {
     constructor(props) {
@@ -38,7 +39,7 @@ class Pong extends Component {
                 maxSpeed: 7,
                 diffSpeed: 3
             },
-            endScore: 500,
+            endScore: 5,
             intervalID: '',
             gameOver: false
         };
@@ -46,6 +47,7 @@ class Pong extends Component {
     }
 
     static defaultProps = {
+        game: 'pong'
     }
 
     componentWillMount() {
@@ -64,14 +66,16 @@ class Pong extends Component {
         this.setState({intervalID: intervalID});
     }
 
-    componentWillUpdate() {        
-        this.redrawCanvas();
-        setTimeout(() => {
-            this.movePaddle();
-            this.moveComputerPaddle();
-        }, 200);
+    componentWillUpdate() {
         if (this.state.gameOver) {
             clearInterval(this.state.intervalID);
+        }
+        if (!this.state.gameOver) {
+            this.redrawCanvas();
+            setTimeout(() => {
+                this.movePaddle();
+                this.moveComputerPaddle();
+            }, 200);
         }
     }
 
@@ -221,7 +225,7 @@ class Pong extends Component {
         //If ball makes it past left paddle, score right player points and reset ball.
         if (ballLeft <= 0) {
             this.setState((prevState) => {
-                prevState.scores.computer += prevState.scores.bounces * prevState.scores.multiplier;
+                prevState.scores.computer += 1;
                 prevState.scores.bounces = 0;
                 prevState.ball.xSpeed = diffSpeed;
                 prevState.ball.ySpeed = 0;
@@ -285,23 +289,33 @@ class Pong extends Component {
     render() {
         return (
         <div className="Pong">
-            <Paddle
-                xPos={this.state.playerPaddle.xPos}
-                yPos={this.state.playerPaddle.yPos}
-                height={this.state.playerPaddle.height}
-                width={this.state.playerPaddle.width}
-            />
-            <Paddle
-                xPos={this.state.computerPaddle.xPos}
-                yPos={this.state.computerPaddle.yPos}
-                height={this.state.computerPaddle.height}
-                width={this.state.computerPaddle.width}
-            />
-            <Ball
-                xPos={this.state.ball.xPos}
-                yPos={this.state.ball.yPos}
-                radius={this.state.ball.radius}
-            />
+            {!this.state.gameOver &&
+                <div>
+                    <Paddle
+                        xPos={this.state.playerPaddle.xPos}
+                        yPos={this.state.playerPaddle.yPos}
+                        height={this.state.playerPaddle.height}
+                        width={this.state.playerPaddle.width}
+                    />
+                    <Paddle
+                        xPos={this.state.computerPaddle.xPos}
+                        yPos={this.state.computerPaddle.yPos}
+                        height={this.state.computerPaddle.height}
+                        width={this.state.computerPaddle.width}
+                    />
+                    <Ball
+                        xPos={this.state.ball.xPos}
+                        yPos={this.state.ball.yPos}
+                        radius={this.state.ball.radius}
+                    />
+                </div>
+            }
+            {this.state.gameOver &&
+                <LeaderBoard
+                    game={this.props.game}
+                    score={this.state.scores.player}
+                />
+            }
         </div>
         );
     }

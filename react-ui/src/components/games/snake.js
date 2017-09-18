@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SetCanvasText, GetCanvas, ResetCanvas, GetRandInt } from '../helpers/helpers';
 import Body from '../helpers/snake/body';
 import Food from '../helpers/snake/food';
+import LeaderBoard from '../leaderboard';
 
 class Snake extends Component {
     constructor(props) {
@@ -19,6 +20,7 @@ class Snake extends Component {
     }
 
     static defaultProps = {
+        game: 'snake',
         snakeSize: 15,
         snakeSegment: 4,
         snakeColor: 'darkolivegreen',
@@ -206,18 +208,28 @@ class Snake extends Component {
     render() {
         return (
         <div className="Snake">
-            <Body 
-                size={this.props.snakeSize}
-                color={this.props.snakeColor}
-                border={this.props.snakeBorder}
-                snake={this.state.snake}
-            />
-            <Food
-                size={this.props.snakeSize}
-                color={this.props.foodColor}
-                border={this.props.foodBorder}
-                food={this.state.food}
-            />
+            {!this.state.gameOver &&
+                <div>
+                    <Body 
+                        size={this.props.snakeSize}
+                        color={this.props.snakeColor}
+                        border={this.props.snakeBorder}
+                        snake={this.state.snake}
+                    />
+                    <Food
+                        size={this.props.snakeSize}
+                        color={this.props.foodColor}
+                        border={this.props.foodBorder}
+                        food={this.state.food}
+                    />
+                </div>
+            }
+            {this.state.gameOver &&
+                <LeaderBoard
+                    game={this.props.game}
+                    score={this.state.score}
+                />
+            }
         </div>
         );
     }
