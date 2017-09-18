@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+let Score = require('./models/score-model');
+const routes = require('./routes/score-routes');
 
 //Initialize App
 const app = express();
@@ -9,6 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 //Database Connection
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/retrocade', {
     useMongoClient: true
 });
@@ -24,38 +28,29 @@ db.on('error', (err) => {
     console.log(err);
 });
 
-/*
-Put this in another file?  Model folder?  Decide where to host Database info.
-
-let mongoose = require('mongoose');
-//Database Schema
-let leaderboardSchema = mongoose.Schema({
-    game: {
-        type: String,
-        required: true
-    },
-    initials: {
-        type: String
-    },
-    score: {
-        type: Number,
-        required: true
-    }
-});
-
-let Leaderboard = module.exports = mongoose.model('Leaderboard', leaderboardSchema);
-
-*/
-
 //Priority serve any static files
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
+//Body Parser Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+//Routes
+routes(app);
+/*
 //Answer API requests.
 app.get('/api', (req, res) => {
+    Score.find({}, (err, scores) => {
+        if(err) {
+            console.log(err);
+        } else {
+            //send scores
+        }
+    });
     res.set('Content-Type', 'application/json');
     res.send('{"message": "Hello from Tyler\'s server!"}');
 });
-
+*/
 //All remaining requests return the React app, so it can handle routing.
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));

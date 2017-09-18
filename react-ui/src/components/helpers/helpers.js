@@ -60,3 +60,7 @@ export const BuildCircle = (name, color, x, y, radius) => {
 export const GetRandInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export const AddCommas = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
