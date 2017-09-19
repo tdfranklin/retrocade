@@ -6,8 +6,8 @@ let Score = require('./models/score-model');
 const routes = require('./routes/score-routes');
 
 //Database address for local and production
-const dbAddress = 'mongodb://localhost/retrocade'; //Local DB for testing
-//const dbAddress = 'mongodb://heroku_mrlj3mkq:4h9rrdi3ip4s613pmsh11ovpbv@ds139884.mlab.com:39884/heroku_mrlj3mkq'; //Production DB
+//const dbAddress = 'mongodb://localhost/retrocade'; //Local DB for testing
+const dbAddress = 'mongodb://heroku_mrlj3mkq:4h9rrdi3ip4s613pmsh11ovpbv@ds139884.mlab.com:39884/heroku_mrlj3mkq'; //Production DB
 
 //Initialize App
 const app = express();
