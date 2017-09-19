@@ -5,8 +5,9 @@ const mongoose = require('mongoose');
 let Score = require('./models/score-model');
 const routes = require('./routes/score-routes');
 
-//const dbAddress = 'mongodb://localhost/retrocade';
-const dbAddress = 'mongodb://heroku_mrlj3mkq:4h9rrdi3ip4s613pmsh11ovpbv@ds139884.mlab.com:39884/heroku_mrlj3mkq';
+//Database address for local and production
+const dbAddress = 'mongodb://localhost/retrocade'; //Local DB for testing
+//const dbAddress = 'mongodb://heroku_mrlj3mkq:4h9rrdi3ip4s613pmsh11ovpbv@ds139884.mlab.com:39884/heroku_mrlj3mkq'; //Production DB
 
 //Initialize App
 const app = express();
@@ -40,20 +41,7 @@ app.use(bodyParser.json());
 
 //Routes
 routes(app);
-/*
-//Answer API requests.
-app.get('/api', (req, res) => {
-    Score.find({}, (err, scores) => {
-        if(err) {
-            console.log(err);
-        } else {
-            //send scores
-        }
-    });
-    res.set('Content-Type', 'application/json');
-    res.send('{"message": "Hello from Tyler\'s server!"}');
-});
-*/
+
 //All remaining requests return the React app, so it can handle routing.
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));

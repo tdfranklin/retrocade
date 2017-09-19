@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Score = mongoose.model('Scores');
 
+//Queries database for top 10 scores of game requested via headers
 exports.top_10_scores = (req, res) => {
     Score.find({game: req.headers.game}).limit(10).sort({score: -1}).exec((err, score) => {
         if (err) {
@@ -11,6 +12,7 @@ exports.top_10_scores = (req, res) => {
     });
 };
 
+//Posts new score to database via headers
 exports.new_score = (req, res) => {
     let new_score = new Score();
     new_score.game = req.headers.game;
@@ -24,58 +26,3 @@ exports.new_score = (req, res) => {
         }
     });
 };
-
-
-
-/*
-exports.list_all_tasks = function(req, res) {
-  Task.find({}, function(err, task) {
-    if (err)
-      res.send(err);
-    res.json(task);
-  });
-};
-
-
-
-
-exports.create_a_task = function(req, res) {
-  var new_task = new Task(req.body);
-  new_task.save(function(err, task) {
-    if (err)
-      res.send(err);
-    res.json(task);
-  });
-};
-
-
-exports.read_a_task = function(req, res) {
-  Task.findById(req.params.taskId, function(err, task) {
-    if (err)
-      res.send(err);
-    res.json(task);
-  });
-};
-
-
-exports.update_a_task = function(req, res) {
-  Task.findOneAndUpdate({_id: req.params.taskId}, req.body, {new: true}, function(err, task) {
-    if (err)
-      res.send(err);
-    res.json(task);
-  });
-};
-
-
-exports.delete_a_task = function(req, res) {
-
-
-  Task.remove({
-    _id: req.params.taskId
-  }, function(err, task) {
-    if (err)
-      res.send(err);
-    res.json({ message: 'Task successfully deleted' });
-  });
-};
-*/

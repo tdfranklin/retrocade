@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-//Scores Schema
+//Database Schema to create model
 let scoreSchema = new Schema({
     game: {
         type: String,

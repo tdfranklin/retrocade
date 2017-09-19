@@ -24,3 +24,5 @@ class ComponentName extends Component {
 }
 
 export default ComponentName;
+
+//Copy/Paste and rename to add new components

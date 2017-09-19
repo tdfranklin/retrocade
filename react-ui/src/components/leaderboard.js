@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { SetCanvasText, ResetCanvas, AddCommas, GetCanvas } from './helpers/helpers';
 import Canvas from './helpers/canvas';
-import HomeScreen from './home-screen';
 
 class LeaderBoard extends Component {
     constructor(props) {
@@ -30,7 +29,7 @@ class LeaderBoard extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.state.inserting) {
-            this.insertNewScore(this.props.score);
+            this.insertNewScore();
         } else {
             if (!this.state.displaying) {
                 this.displayTopScores();
@@ -41,6 +40,8 @@ class LeaderBoard extends Component {
         }
     }
 
+    //Send GET request to API to get top 10 scores for current game and save to state.
+    //Then call to check for new high score and insert it.
     getTopTen() {
         let myHeader = new Headers({
             game: this.props.game
@@ -80,6 +81,7 @@ class LeaderBoard extends Component {
         });
     }
 
+    //Sends POST request to API with high score if there is a new high score.
     submitHighScore() {
         let myHeader = new Headers({
             game: this.props.game,
@@ -98,6 +100,7 @@ class LeaderBoard extends Component {
         });
     }
 
+    //Compares score to top 10 and returns true if >= any current high score
     checkForHighScore(score) {
         const highScores = this.state.topTen;
         for (let data of highScores) {
@@ -107,6 +110,7 @@ class LeaderBoard extends Component {
         }
     }
 
+    //Loops through high scores and prints text to canvas
     displayTopScores() {
         let num = 1;
         let xPos = 220;
@@ -137,13 +141,15 @@ class LeaderBoard extends Component {
         this.setState({displaying: true});
     }
 
-    insertNewScore(score) {
+    //Displays text for Add Initials screen
+    insertNewScore() {
         ResetCanvas('black', 'canvas');
         SetCanvasText('white', 'Enter Initials', '35px', 170, 100, 'canvas');
         SetCanvasText('white', 'Press Enter to Save', '25px', 170, 200, 'canvas');
         SetCanvasText('white', this.state.initials.toUpperCase(), '50px', 335, 370, 'canvas');
     }
 
+    //Validation and keydown event for Add Initials screen
     handleEvent(event) {
         let newInitials = this.state.initials;
         const keyPress = event.key;
@@ -171,6 +177,7 @@ class LeaderBoard extends Component {
         this.setState({initials: newInitials});
     }
 
+    //Reloads the page to return back to Home screen
     handleClick(e) {
         window.location.reload()
     }

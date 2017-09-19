@@ -13,6 +13,7 @@ class Snake extends Component {
             snake: [],
             food: {},
             direction: 'down',
+            dirChanged: false,
             intervalID: '',
             gameOver: false,
             snakeSpeed: 100
@@ -31,9 +32,7 @@ class Snake extends Component {
 
     componentWillMount() {
         document.addEventListener('keydown', (e) => {
-            setTimeout(() => {
-                this.handleDirection(e);
-            }, 100);
+            this.handleDirection(e);
         });
         this.setDifficulty();
     }
@@ -80,29 +79,29 @@ class Snake extends Component {
         //Sets direction in state based on keyboard input.
         switch(keyPress) {
             case 'ArrowLeft':
-                if (direction !== 'right') {
+                if (direction !== 'right' && !this.state.dirChanged) {
                     direction = 'left';
                 }
                 break;
             case 'ArrowRight':
-                if (direction !== 'left') {
+                if (direction !== 'left' && !this.state.dirChanged) {
                     direction = 'right';
                 }
                 break;
             case 'ArrowUp':
-                if (direction !== 'down') {
+                if (direction !== 'down' && !this.state.dirChanged) {
                     direction = 'up';
                 }
                 break;
             case 'ArrowDown':
-                if (direction !== 'up') {
+                if (direction !== 'up' && !this.state.dirChanged) {
                     direction = 'down';
                 }
                 break;
             default:
                 break;
-            }
-        this.setState({direction: direction});
+        }
+        this.setState({direction: direction, dirChanged: true});
     }
 
     createFood() {
@@ -131,7 +130,7 @@ class Snake extends Component {
     checkCollision(xPos, yPos, arr) {
         //takes snake head X and Y position and checks to see if it is touching any other
         //segment of the snake body.  Returns boolean based on outcome.
-        for (let i = 0; i < arr.length; i++) {
+        for (let i = 1; i < arr.length; i++) {
             if (arr[i].x === xPos && arr[i].y === yPos) {
                 return true;
             }
@@ -202,6 +201,7 @@ class Snake extends Component {
         this.setState({
             snake: snake,
             score: score,
+            dirChanged: false
         });
     }
 
