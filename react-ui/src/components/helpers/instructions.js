@@ -1,15 +1,22 @@
 export const PongInstructions = {
-    lineOne: 'Instructions: Use the Up and Down arrow keys on your',
-    lineTwo: 'keyboard to move your paddle up and down to hit the',
-    lineThree: 'ball. Try to score a goal against your opponent. The',
-    lineFour: 'game is over when your opponent scores 5 times.',
-    lineFive: 'Can you make it to the leaderboard?'
+    lineOne: 'Instructions: Use Up and Down',
+    lineTwo: 'arrow keys on your keyboard to',
+    lineThree: 'move your paddle up and down to',
+    lineFour: 'hit the ball. Try to score a',
+    lineFive: 'goal against your opponent. The',
+    lineSix: 'game is over when your opponent',
+    lineSeven: 'scores 5 times.',
+    lineEight: 'Can you get a new High Score?!'
 }
 
 export const SnakeInstructions = {
-    lineOne: 'Instructions: Use the Up, Down, Left and Right arrow',
-    lineTwo: 'keys to move your snake around and collect food.',
-    lineThree: 'Every piece of food will make your snake grow and',
-    lineFour: 'gain you points. Beware! Game over if you touch the',
-    lineFive: 'sides or snake. Can you make it to the leaderboard?'
+    lineOne: 'Instructions: Use the Up, Down,',
+    lineTwo: 'Left and Right arrows to move',
+    lineThree: 'your snake around and collect',
+    lineFour: 'food. Every piece of food will',
+    lineFive: 'make your snake grow and gain',
+    lineSix: 'you points. Beware! Game over',
+    lineSeven: 'if your snake touches the',
+    lineEight: 'sides or itself!',
+    lineNine: 'Can you get a new High Score?!'
 }

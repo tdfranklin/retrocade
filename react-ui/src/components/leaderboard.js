@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { SetCanvasText, ResetCanvas, AddCommas, GetCanvas } from './helpers/helpers';
+import { SetCanvasText, ResetCanvas, AddCommas, GetCanvas, LoadImg } from './helpers/helpers';
 import Canvas from './helpers/canvas';
+import RetroMountain from '../assets/img/retro-mountain.jpg';
+import HighScore from '../assets/img/high-score.png';
 
 class LeaderBoard extends Component {
     constructor(props) {
@@ -10,8 +12,8 @@ class LeaderBoard extends Component {
             inserting: false,
             displaying: false,
             topTen: [],
-            initials: '',
-            startOver: false
+            lastScore: '',
+            initials: ''
         };
     }
 
@@ -20,6 +22,7 @@ class LeaderBoard extends Component {
 
     componentDidMount() {
         ResetCanvas('black', 'canvas');
+        LoadImg('canvas', RetroMountain, 50, 50, 725, 525);
         this.getTopTen();
     }
 
@@ -29,13 +32,15 @@ class LeaderBoard extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.state.inserting) {
-            this.insertNewScore();
+            ResetCanvas('black', 'canvas');
+            LoadImg('canvas', HighScore, 50, 50, 725, 525, this.insertNewScore.bind(this));
         } else {
             if (!this.state.displaying) {
-                this.displayTopScores();
+                ResetCanvas('black', 'canvas');
+                LoadImg('canvas', RetroMountain, 50, 15, 725, 575, this.displayTopScores.bind(this));
             }
             if (GetCanvas('Home')) {
-                SetCanvasText('silver', 'Home', '35px', 15, 35, 'Home');
+                SetCanvasText('maroon', 'Home', '35px', 15, 35, 'Home');
             }            
         }
     }
@@ -114,8 +119,9 @@ class LeaderBoard extends Component {
     displayTopScores() {
         let num = 1;
         let xPos = 220;
-        let yPos = 260;
+        let yPos = 260;        
         const scores = this.state.topTen;
+        let lastScore = this.state.lastScore;
         if (this.state.initials !== '') {
             let newHighScore = {name: this.state.initials, score: this.props.score};
             for (let [index, data] of scores.entries()) {
@@ -126,27 +132,28 @@ class LeaderBoard extends Component {
                 }
             }
         }
-        const lastScore = scores.pop();
-        ResetCanvas('black', 'canvas');
-        SetCanvasText('white', this.props.game.toUpperCase(), '80px', 220, 100, 'canvas');
-        SetCanvasText('white', 'High Scores', '30px', 255, 180, 'canvas');
+        if (scores.length === 10) {
+            lastScore = scores.pop();
+        }
+        SetCanvasText('deeppink', this.props.game.toUpperCase(), '80px', 220, 100, 'canvas');
+        SetCanvasText('gold', 'High Scores', '30px', 255, 180, 'canvas');
         for (let score of scores) {
-            SetCanvasText('white', `${num}.   ${score.name.toUpperCase()}     ${AddCommas(score.score)}`,
+            SetCanvasText('lime', `${num}.   ${score.name.toUpperCase()}     ${AddCommas(score.score)}`,
             '20px', xPos, yPos, 'canvas');
             num++;
             yPos += 35;
         }
-        SetCanvasText('white', `${num}.  ${lastScore.name.toUpperCase()}     ${AddCommas(lastScore.score)}`,
-        '20px', xPos, yPos, 'canvas');
-        this.setState({displaying: true});
+        SetCanvasText('lime', `${num}.  ${lastScore.name.toUpperCase()}     ${AddCommas(lastScore.score)}`,
+        '20px', xPos, yPos, 'canvas');        
+        this.setState({displaying: true, initials: '', lastScore: lastScore});
     }
 
     //Displays text for Add Initials screen
     insertNewScore() {
-        ResetCanvas('black', 'canvas');
-        SetCanvasText('white', 'Enter Initials', '35px', 170, 100, 'canvas');
-        SetCanvasText('white', 'Press Enter to Save', '25px', 170, 200, 'canvas');
-        SetCanvasText('white', this.state.initials.toUpperCase(), '50px', 335, 370, 'canvas');
+        SetCanvasText('fuchsia', 'Enter Initials', '50px', 65, 75, 'canvas');
+        SetCanvasText('lime', 'Type 3 Lowercase Letters', '25px', 110, 150, 'canvas');
+        SetCanvasText('lime', 'Press Enter to Save', '25px', 180, 200, 'canvas');
+        SetCanvasText('cyan', this.state.initials.toUpperCase(), '70px', 325, 370, 'canvas');
     }
 
     //Validation and keydown event for Add Initials screen
@@ -189,7 +196,7 @@ class LeaderBoard extends Component {
 
     handleMouseLeave(e) {
         const canvasName = e.target.id;
-        SetCanvasText('silver', canvasName, '35px', 15, 35, canvasName);
+        SetCanvasText('maroon', canvasName, '35px', 15, 35, canvasName);
     }
 
     render() {
@@ -203,7 +210,7 @@ class LeaderBoard extends Component {
 
         return (
         <div className="LeaderBoard">
-            {this.state.displaying && !this.state.startOver &&
+            {this.state.displaying &&
                 <Canvas
                     id={'Home'}
                     width={155}

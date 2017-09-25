@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { BuildRect } from '../helpers';
+import { BuildRect, RectBorder } from '../helpers';
 
 class Paddle extends Component {
     
     componentDidUpdate(prevProps, prevState) {
-        BuildRect('white', 'canvas', this.props.xPos, this.props.yPos, this.props.width, this.props.height);
+        BuildRect(this.props.color, 'canvas', this.props.xPos, this.props.yPos, this.props.width, this.props.height);
+        RectBorder(this.props.borderColor, 'canvas', this.props.xPos, this.props.yPos, this.props.width, this.props.height, 3);
     }
 
     render() {

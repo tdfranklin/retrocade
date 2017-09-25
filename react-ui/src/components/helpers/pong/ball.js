@@ -9,7 +9,7 @@ class Ball extends Component {
     }
     
     componentDidUpdate(prevProps, prevState) {
-        BuildCircle('canvas', 'white', this.props.xPos, this.props.yPos, this.props.radius);
+        BuildCircle('canvas', this.props.color, this.props.xPos, this.props.yPos, this.props.radius)
     }
 
     render() {

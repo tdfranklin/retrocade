@@ -3,6 +3,7 @@ import { SetDefaultCanvas, GetCanvas, GetContext, SetCanvasText } from '../helpe
 import Paddle from '../helpers/pong/paddle';
 import Ball from '../helpers/pong/ball';
 import LeaderBoard from '../leaderboard';
+import RetroImage from '../../assets/img/retro.png'
 
 class Pong extends Component {
     constructor(props) {
@@ -19,7 +20,9 @@ class Pong extends Component {
                 yPos: 250,
                 width: 20,
                 height: 100,
-                speed: 8
+                speed: 8,
+                color: 'mediumvioletred',
+                borderColor: 'midnightblue'
             },
             computerPaddle: {
                 xPos: 785,
@@ -27,7 +30,9 @@ class Pong extends Component {
                 width: 20,
                 height: 100,
                 speed: 3,
-                offset: 30
+                offset: 30,
+                color: 'mediumvioletred',
+                borderColor: 'midnightblue'
             },
             ball: {
                 xPos: 400,
@@ -37,7 +42,8 @@ class Pong extends Component {
                 ySpeed: 0,
                 serve: 'right',
                 maxSpeed: 7,
-                diffSpeed: 3
+                diffSpeed: 3,
+                color: 'darkturquoise'
             },
             endScore: 5,
             intervalID: '',
@@ -113,15 +119,21 @@ class Pong extends Component {
         }
     }
 
+    //Reset and redraw canvas.
     redrawCanvas() {
         const canvas = GetCanvas('canvas');
         const context = GetContext('canvas');
-        const size = 10;
-        //Reset and redraw canvas.
+        const size = 20;
+        let img = new Image();
+        img.src = RetroImage;
+
         SetDefaultCanvas('black', 'canvas');
         SetCanvasText('white', `Score: ${this.state.scores.player}`, '15px', 125, 20, 'canvas');
         SetCanvasText('white', `Score: ${this.state.scores.computer}`, '15px', 550, 20, 'canvas');
+        //Load Image
+        context.drawImage(img, 200, 250, 450, 100);
         //Line down the middle of canvas.
+        context.fillStyle = 'lime';
         for(let x = 0; x < canvas.height; x += size*2) {
             context.fillRect(canvas.width / 2 - size / 2, x, size, size);
         }
@@ -296,17 +308,22 @@ class Pong extends Component {
                         yPos={this.state.playerPaddle.yPos}
                         height={this.state.playerPaddle.height}
                         width={this.state.playerPaddle.width}
+                        color={this.state.playerPaddle.color}
+                        borderColor={this.state.playerPaddle.borderColor}
                     />
                     <Paddle
                         xPos={this.state.computerPaddle.xPos}
                         yPos={this.state.computerPaddle.yPos}
                         height={this.state.computerPaddle.height}
                         width={this.state.computerPaddle.width}
+                        color={this.state.computerPaddle.color}
+                        borderColor={this.state.computerPaddle.borderColor}
                     />
                     <Ball
                         xPos={this.state.ball.xPos}
                         yPos={this.state.ball.yPos}
                         radius={this.state.ball.radius}
+                        color={this.state.ball.color}
                     />
                 </div>
             }

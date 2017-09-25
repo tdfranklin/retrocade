@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Canvas from './helpers/canvas';
-import { SetDefaultCanvas, SetCanvasText, ResetCanvas, SetCanvasBorder } from './helpers/helpers';
+import { SetDefaultCanvas, SetCanvasText, ResetCanvas, SetCanvasBorder, LoadImg } from './helpers/helpers';
 import { PongInstructions, SnakeInstructions } from './helpers/instructions';
 import GameHome from './game-home';
+import Retrocade from '../assets/img/retrocade.jpg';
 
 
 class HomeScreen extends Component {
@@ -14,9 +15,17 @@ class HomeScreen extends Component {
         };
     }
 
+    componentDidMount() {
+        SetDefaultCanvas('black', 'canvas');
+        SetCanvasText('deeppink', 'Choose Your Game', '40px', 80, 50, 'canvas');
+        this.newGame('Pong', 'lime');
+        this.newGame('Snake', 'lime');
+        LoadImg('canvas', Retrocade, 50, 75, 700, 450);
+    }
+
     newGame(name, color) {
-        SetCanvasBorder(color, name, 5);
-        SetCanvasText(color, name, '25px', 75, 135, name);
+        SetCanvasBorder(color, name, 6);
+        SetCanvasText(color, name, '35px', 20, 120, name);
     }
 
     handleClick(e) {
@@ -26,23 +35,16 @@ class HomeScreen extends Component {
             game: e.target.id
         });
         ResetCanvas('black', 'canvas');
-    }
-
-    componentDidMount() {
-        SetDefaultCanvas('black', 'canvas');
-        SetCanvasText('white', 'Choose Your Game', '25px', 200, 35, 'canvas');
-        this.newGame('Pong', 'white');
-        this.newGame('Snake', 'white');
-    }
+    }    
 
     handleMouseEnter(e) {
         const canvasName = e.target.id;
-        this.newGame(canvasName, 'orange');
+        this.newGame(canvasName, 'darkorange');
     }
 
     handleMouseLeave(e) {
         const canvasName = e.target.id;
-        this.newGame(canvasName, 'white');
+        this.newGame(canvasName, 'lime');
     }
 
     render() {
@@ -72,8 +74,8 @@ class HomeScreen extends Component {
                 <div>
                     <Canvas
                         id={'Pong'}
-                        width={250}
-                        height={250}
+                        width={200}
+                        height={200}
                         onClick={this.handleClick.bind(this)}
                         onMouseEnter={this.handleMouseEnter.bind(this)}
                         onMouseLeave={this.handleMouseLeave.bind(this)}
@@ -81,8 +83,8 @@ class HomeScreen extends Component {
                     />
                     <Canvas
                         id={'Snake'}
-                        width={250}
-                        height={250}
+                        width={200}
+                        height={200}
                         onClick={this.handleClick.bind(this)}
                         onMouseEnter={this.handleMouseEnter.bind(this)}
                         onMouseLeave={this.handleMouseLeave.bind(this)}
@@ -92,21 +94,13 @@ class HomeScreen extends Component {
             }
             {this.state.game === 'Pong' &&
                 <GameHome
-                    lineOne={PongInstructions.lineOne}
-                    lineTwo={PongInstructions.lineTwo}
-                    lineThree={PongInstructions.lineThree}
-                    lineFour={PongInstructions.lineFour}
-                    lineFive={PongInstructions.lineFive}
+                    instructions={PongInstructions}
                     game={this.state.game}
                 />
             }
             {this.state.game === 'Snake' &&
                 <GameHome
-                    lineOne={SnakeInstructions.lineOne}
-                    lineTwo={SnakeInstructions.lineTwo}
-                    lineThree={SnakeInstructions.lineThree}
-                    lineFour={SnakeInstructions.lineFour}
-                    lineFive={SnakeInstructions.lineFive}
+                    instructions={SnakeInstructions}
                     game={this.state.game}
                 />
             }

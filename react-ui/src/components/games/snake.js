@@ -11,6 +11,7 @@ class Snake extends Component {
             score: 0,
             scoreMod: 50,
             snake: [],
+            snakeSize: 25,
             food: {},
             direction: 'down',
             dirChanged: false,
@@ -22,7 +23,6 @@ class Snake extends Component {
 
     static defaultProps = {
         game: 'snake',
-        snakeSize: 15,
         snakeSegment: 4,
         snakeColor: 'darkolivegreen',
         snakeBorder: 'darkgreen',
@@ -61,12 +61,14 @@ class Snake extends Component {
         if (this.props.difficulty === 'Medium') {
             this.setState({
                 snakeSpeed: 80,
+                snakeSize: 20,
                 scoreMod: 70
             });
         }
         if (this.props.difficulty === 'Hard') {
             this.setState({
                 snakeSpeed: 60,
+                snakeSize: 15,
                 scoreMod: 90
             });
         }
@@ -109,8 +111,8 @@ class Snake extends Component {
         const snake = this.state.snake;
         //Creates food by generating a random X and Y coordinate and saving to state.
         let food = {
-            x: GetRandInt(2, ((canvas.width / this.props.snakeSize) - 1)),
-            y: GetRandInt(2, ((canvas.height / this.props.snakeSize) - 1))
+            x: GetRandInt(2, ((canvas.width / this.state.snakeSize) - 2)),
+            y: GetRandInt(2, ((canvas.height / this.state.snakeSize) - 2))
         }
 
         //Checks to see if food coordinates are the same as snake and if so will
@@ -176,8 +178,8 @@ class Snake extends Component {
 
         //Check to see if snake head collides with edge of canvas or itself and sets
         //gameOver state if it does.
-        if (snakeX <= -1 || snakeX >= (canvas.width / this.props.snakeSize) ||
-            snakeY <= -1 || snakeY >= (canvas.height / this.props.snakeSize) ||
+        if (snakeX <= -1 || snakeX >= (canvas.width / this.state.snakeSize) ||
+            snakeY <= -1 || snakeY >= (canvas.height / this.state.snakeSize) ||
             this.checkCollision(snakeX, snakeY, snake)) {
                 this.setState({gameOver: true});
             }
@@ -211,13 +213,13 @@ class Snake extends Component {
             {!this.state.gameOver &&
                 <div>
                     <Body 
-                        size={this.props.snakeSize}
+                        size={this.state.snakeSize}
                         color={this.props.snakeColor}
                         border={this.props.snakeBorder}
                         snake={this.state.snake}
                     />
                     <Food
-                        size={this.props.snakeSize}
+                        size={this.state.snakeSize}
                         color={this.props.foodColor}
                         border={this.props.foodBorder}
                         food={this.state.food}

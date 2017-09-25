@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Canvas from './helpers/canvas';
-import { SetCanvasText, ResetCanvas } from './helpers/helpers';
+import { SetCanvasText, ResetCanvas, LoadImg } from './helpers/helpers';
 import GameDifficulty from './game-diff';
 import Pong from './games/pong';
 import Snake from './games/snake';
+import RetroStyle from '../assets/img/retrostyle.jpg';
 
 class GameHome extends Component {
     constructor(props) {
@@ -19,20 +20,23 @@ class GameHome extends Component {
     }
 
     componentDidMount() {
-        const textOne = this.props.lineOne;
-        const textTwo = this.props.lineTwo;
-        const textThree = this.props.lineThree;
-        const textFour = this.props.lineFour;
-        const textFive = this.props.lineFive;
+        LoadImg('canvas', RetroStyle, 25, 25, 775, 550, this.loadInstructions.bind(this));
+        SetCanvasText('indigo', 'Play', '35px', 10, 40, 'Play');
+        SetCanvasText('indigo', 'Difficulty', '35px', 10, 40, 'Difficulty');        
+    }
+
+    //Draws instructions on the canvas
+    loadInstructions() {
         const game = this.props.game;
-        SetCanvasText('white', game, '35px', 350, 50, 'canvas');
-        SetCanvasText('white', textOne, '15px', 20, 100, 'canvas');
-        SetCanvasText('white', textTwo, '15px', 20, 140, 'canvas');
-        SetCanvasText('white', textThree, '15px', 20, 180, 'canvas');
-        SetCanvasText('white', textFour, '15px', 20, 220, 'canvas');
-        SetCanvasText('white', textFive, '15px', 20, 260, 'canvas');
-        SetCanvasText('white', 'Play', '20px', 15, 35, 'Play');
-        SetCanvasText('white', 'Difficulty', '20px', 15, 35, 'Difficulty');
+        const instructions = this.props.instructions;
+        let yPos = 100;
+
+        SetCanvasText('deeppink', game, '50px', 300, 55, 'canvas');        
+
+        for (let line of Object.entries(instructions)) {
+            SetCanvasText('chartreuse', line[1], '25px', 20, yPos, 'canvas');
+            yPos += 40;
+        }
     }
 
     handleClick(e) {
@@ -47,12 +51,12 @@ class GameHome extends Component {
 
     handleMouseEnter(e) {
         const canvasName = e.target.id;
-        SetCanvasText('orange', canvasName, '20px', 15, 35, canvasName);
+        SetCanvasText('darkorange', canvasName, '35px', 10, 40, canvasName);
     }
 
     handleMouseLeave(e) {
         const canvasName = e.target.id;
-        SetCanvasText('white', canvasName, '20px', 15, 35, canvasName);
+        SetCanvasText('indigo', canvasName, '35px', 10, 40, canvasName);
     }
 
     render() {
@@ -60,15 +64,15 @@ class GameHome extends Component {
             //border: '2px solid white',
             margin: 'auto auto',
             position: 'absolute',
-            bottom: '25%',
-            left: '8%'
+            bottom: '10%',
+            left: '5%'
         }
         const diffStyle = {
             //border: '2px solid white',
             margin: 'auto auto',
             position: 'absolute',
-            bottom: '25%',
-            right: '15%'
+            bottom: '10%',
+            right: '5%'
         }
 
         return (
@@ -77,8 +81,8 @@ class GameHome extends Component {
                 <div>
                     <Canvas
                         id={'Play'}
-                        width={100}
-                        height={50}
+                        width={150}
+                        height={45}
                         onClick={this.handleClick.bind(this)}
                         onMouseEnter={this.handleMouseEnter.bind(this)}
                         onMouseLeave={this.handleMouseLeave.bind(this)}
@@ -86,8 +90,8 @@ class GameHome extends Component {
                     />
                     <Canvas
                         id={'Difficulty'}
-                        width={195}
-                        height={50}
+                        width={330}
+                        height={45}
                         onClick={this.handleClick.bind(this)}
                         onMouseEnter={this.handleMouseEnter.bind(this)}
                         onMouseLeave={this.handleMouseLeave.bind(this)}

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Canvas from './helpers/canvas';
-import { SetCanvasText } from './helpers/helpers';
+import { SetCanvasText, LoadImg } from './helpers/helpers';
 import { PongInstructions, SnakeInstructions } from './helpers/instructions';
 import GameHome from './game-home';
+import ThumbsUp from '../assets/img/thumbs-up.jpg';
 
 class GameDifficulty extends Component {
     constructor(props) {
@@ -17,11 +18,12 @@ class GameDifficulty extends Component {
     }
 
     componentDidMount() {
-        const text = this.props.game;
-        SetCanvasText('white', text, '35px', 350, 50, 'canvas');
-        SetCanvasText('white', 'Easy', '20px', 15, 35, 'Easy');
-        SetCanvasText('white', 'Medium', '20px', 15, 35, 'Medium');
-        SetCanvasText('white', 'Hard', '20px', 15, 35, 'Hard');
+        LoadImg('canvas', ThumbsUp, 215, 125, 400, 400);
+        const text = `pick your poison for ${this.props.game}`;
+        SetCanvasText('deeppink', text.toUpperCase(), '25px', 75, 50, 'canvas');
+        SetCanvasText('aqua', 'Easy', '40px', 10, 45, 'Easy');
+        SetCanvasText('aqua', 'Medium', '40px', 10, 45, 'Medium');
+        SetCanvasText('aqua', 'Hard', '40px', 10, 45, 'Hard');
     }
 
     handleClick(e) {
@@ -33,35 +35,35 @@ class GameDifficulty extends Component {
 
     handleMouseEnter(e) {
         const canvasName = e.target.id;
-        SetCanvasText('orange', canvasName, '20px', 15, 35, canvasName);
+        SetCanvasText('orange', canvasName, '40px', 10, 45, canvasName);
     }
 
     handleMouseLeave(e) {
         const canvasName = e.target.id;
-        SetCanvasText('white', canvasName, '20px', 15, 35, canvasName);
+        SetCanvasText('aqua', canvasName, '40px', 10, 45, canvasName);
     }
 
     render() {
         const easyStyle = {
-            //border: '2px solid white',
+            //border: '2px solid black',
             margin: 'auto auto',
             position: 'absolute',
             top: '25%',
-            left: '45%'
+            left: '40%'
         }
         const medStyle = {
-            //border: '2px solid white',
+            //border: '2px solid black',
             margin: 'auto auto',
             position: 'absolute',
-            top: '45%',
-            left: '43%'
+            top: '46%',
+            left: '35%'
         }
         const hardStyle = {
-            //border: '2px solid white',
+            //border: '2px solid black',
             margin: 'auto auto',
             position: 'absolute',
             top: '65%',
-            left: '45%'
+            left: '40%'
         }
         return (
         <div className="GameDifficulty">
@@ -69,7 +71,7 @@ class GameDifficulty extends Component {
                 <div>
                     <Canvas
                         id={'Easy'}
-                        width={100}
+                        width={175}
                         height={50}
                         onClick={this.handleClick.bind(this)}
                         onMouseEnter={this.handleMouseEnter.bind(this)}
@@ -78,7 +80,7 @@ class GameDifficulty extends Component {
                     />
                     <Canvas
                         id={'Medium'}
-                        width={150}
+                        width={250}
                         height={50}
                         onClick={this.handleClick.bind(this)}
                         onMouseEnter={this.handleMouseEnter.bind(this)}
@@ -87,7 +89,7 @@ class GameDifficulty extends Component {
                     />
                     <Canvas
                         id={'Hard'}
-                        width={100}
+                        width={175}
                         height={50}
                         onClick={this.handleClick.bind(this)}
                         onMouseEnter={this.handleMouseEnter.bind(this)}
@@ -99,22 +101,14 @@ class GameDifficulty extends Component {
 
             {this.props.game === 'Pong' && this.state.diffSelected &&
                 <GameHome
-                    lineOne={PongInstructions.lineOne}
-                    lineTwo={PongInstructions.lineTwo}
-                    lineThree={PongInstructions.lineThree}
-                    lineFour={PongInstructions.lineFour}
-                    lineFive={PongInstructions.lineFive}
+                    instructions={PongInstructions}
                     game={this.props.game}
                     difficulty={this.state.difficulty}
                 />
             }
             {this.props.game === 'Snake' && this.state.diffSelected &&
                 <GameHome
-                    lineOne={SnakeInstructions.lineOne}
-                    lineTwo={SnakeInstructions.lineTwo}
-                    lineThree={SnakeInstructions.lineThree}
-                    lineFour={SnakeInstructions.lineFour}
-                    lineFive={SnakeInstructions.lineFive}
+                    instructions={SnakeInstructions}
                     game={this.props.game}
                     difficulty={this.state.difficulty}
                 />

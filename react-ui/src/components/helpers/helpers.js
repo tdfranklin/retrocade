@@ -24,7 +24,10 @@ export const SetCanvasBorder = (color, name, size) => {
 export const SetCanvasText = (color, text, fontSize, xPos, yPos, name) => {
     const context = GetContext(name);
     context.fillStyle = color;
-    context.font = context.font = `${fontSize} 'Press Start 2P' `;
+    context.font = `${fontSize} 'Press Start 2P' `;
+    context.lineWidth = 5;
+    context.strokeStyle = 'black';
+    context.strokeText(text, xPos, yPos);
     context.fillText(text, xPos, yPos);
 }
 
@@ -36,10 +39,28 @@ export const ResetCanvas = (color, name) => {
     context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+export const LoadImg = (name, image, xPos, yPos, width, height, postLoad=null) => {
+    const context = GetContext(name);
+    const img = new Image();
+    img.src = image;
+    img.onload = () => {
+        context.drawImage(img, xPos, yPos, width, height);
+        if (postLoad)
+            postLoad();
+    }    
+}
+
 export const BuildRect = (color, name, xPos, yPos, width, height) => {
     const context = GetContext(name);
     context.fillStyle = color;
     context.fillRect(xPos, yPos, width, height);
+}
+
+export const RectBorder = (color, name, xPos, yPos, width, height, size) => {
+    const context = GetContext(name);
+    context.strokeStyle = color;
+    context.lineWidth = size;
+    context.strokeRect(xPos, yPos, width, height);
 }
 
 export const ClearRect = (name, xPos, yPos, width, height) => {
@@ -58,7 +79,7 @@ export const BuildCircle = (name, color, x, y, radius) => {
 }
 
 export const GetRandInt = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 export const AddCommas = (num) => {
